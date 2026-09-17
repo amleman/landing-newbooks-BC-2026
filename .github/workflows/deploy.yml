@@ -4,8 +4,8 @@
 # GITHUB_REPOSITORY, que Actions inyecta solo. Si algún día se pone un dominio
 # propio, hay que añadir `env: VITE_BASE: /` al paso de compilar.
 #
-# Antes del primer despliegue, una vez, en el repositorio:
-#   Settings → Pages → Build and deployment → Source: «GitHub Actions»
+# El propio workflow activa Pages la primera vez (`enablement: true` más
+# abajo), así que no hay que tocar nada a mano en Settings.
 
 name: Publicar en GitHub Pages
 
@@ -46,7 +46,12 @@ jobs:
       - name: Comprobar tipos y compilar
         run: npm run build
 
+      # enablement: true activa Pages en modo «GitHub Actions» la primera vez,
+      # usando el token del propio repositorio. Sin esto habría que entrar a
+      # Settings → Pages y elegir ese origen a mano.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v4
         with:
