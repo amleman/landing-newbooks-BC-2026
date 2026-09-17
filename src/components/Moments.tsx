@@ -1,6 +1,7 @@
 import { books, type Mood } from "../data/books";
 import { moods } from "../data/taxonomy";
 import { Reveal } from "./Reveal";
+import { rutaPublica } from "../lib/rutas";
 
 const FAN = [
   "group-hover:-translate-x-2.5 group-hover:-rotate-6",
@@ -110,7 +111,7 @@ export function Moments({ onAbrir, abierto }: Props) {
                           }}
                         >
                           <img
-                            src={b.cover}
+                            src={rutaPublica(b.cover)}
                             alt=""
                             aria-hidden
                             loading="lazy"

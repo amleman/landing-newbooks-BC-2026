@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
+import { rutaPublica } from "../lib/rutas";
 
 const links = [
   { href: "#momentos", label: "Momentos" },
@@ -40,7 +41,7 @@ export function Nav() {
               junto a los enlaces y el botón de Biblos. */}
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
             <img
-              src="/LOGOTIPOS_USAC_LOGO-2-OFICIAL-BLANCO-1024x440.png"
+              src={rutaPublica("/LOGOTIPOS_USAC_LOGO-2-OFICIAL-BLANCO-1024x440.png")}
               alt="Universidad de San Carlos de Guatemala"
               width={1024}
               height={440}
@@ -51,7 +52,7 @@ export function Nav() {
 
             <a href="#inicio" className="group flex shrink-0 items-center gap-3">
               <img
-                src="/logo-mark.webp"
+                src={rutaPublica("/logo-mark.webp")}
                 alt=""
                 aria-hidden="true"
                 width={240}
@@ -67,14 +68,14 @@ export function Nav() {
             <Filete />
 
             <img
-              src="/hceres.png"
+              src={rutaPublica("/hceres.png")}
               alt="Acreditación internacional Hcéres"
               width={222}
               height={223}
               className="hidden h-10 w-auto shrink-0 opacity-90 xl:block"
             />
             <img
-              src="/cropped-Nuevo-Logotipo-CEAI.png"
+              src={rutaPublica("/cropped-Nuevo-Logotipo-CEAI.png")}
               alt="CEAI UDUALC · Consejo de Evaluación y Acreditación Internacional"
               width={841}
               height={561}

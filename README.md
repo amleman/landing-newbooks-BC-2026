@@ -45,6 +45,44 @@ npm run preview
 
 ## Publicar
 
+### GitHub Pages (lo que está publicado hoy)
+
+Cada `push` a `main` compila y publica el sitio solo, con el workflow de
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). No hay que
+subir `dist/` al repositorio: lo construye el runner.
+
+    https://amleman.github.io/landing-newbooks-BC-2026/
+
+**Requisito, una sola vez**, en el repositorio de GitHub:
+**Settings → Pages → Build and deployment → Source: «GitHub Actions»**.
+Sin eso el workflow compila pero no puede publicar.
+
+Pages sirve el sitio dentro de una subcarpeta (`/landing-newbooks-BC-2026/`),
+no en la raíz del dominio, así que todas las rutas de assets necesitan ese
+prefijo. Está resuelto en dos sitios y no hay que tocar nada al respecto:
+
+- `vite.config.ts` deduce el prefijo de la variable `GITHUB_REPOSITORY` que
+  Actions inyecta sola, y se lo aplica al HTML y al CSS.
+- `rutaPublica()` (`src/lib/rutas.ts`) lo aplica a las rutas que viven como
+  cadena de texto en el código y en `src/data/books.ts` (las portadas y los
+  logos), que Vite no puede reescribir por su cuenta.
+
+Para reproducir en local exactamente lo que se publica, incluido el prefijo
+(en **PowerShell**, no en Git Bash, que convierte el valor a una ruta de
+Windows):
+
+```powershell
+$env:GITHUB_REPOSITORY = "amleman/landing-newbooks-BC-2026"
+npm run build
+npm run preview -- --base=/landing-newbooks-BC-2026/
+# abrir http://localhost:4173/landing-newbooks-BC-2026/
+```
+
+Si algún día se pone un dominio propio, el prefijo vuelve a ser `/`: basta
+añadir `env: VITE_BASE: /` al paso de compilar del workflow.
+
+### Servidor propio de la Biblioteca
+
 ```bash
 npm run build
 ```
@@ -164,9 +202,10 @@ frase de venta.
 
 ## Marca
 
-Los originales viven en `brand/` y **no se publican**: todo lo que está en
-`public/` se copia tal cual a `dist/`, y ahí solo deben ir los derivados que la
-página usa. Para regenerarlos:
+Los originales viven en `brand/`, que **no se publica y tampoco está en el
+repositorio** (ver `.gitignore`: son fuentes de licencia comercial y este repo
+es público). Se quedan en la máquina de quien mantiene el proyecto; lo que el
+sitio necesita son los derivados de `public/`. Para regenerarlos:
 
 ```bash
 pip install fonttools brotli Pillow
@@ -201,7 +240,8 @@ el bloque `@theme` de `src/styles.css`.
 ## Estructura
 
 ```
-brand/                  Originales de marca. NO se publican.
+brand/                  Originales de marca. NO se publican ni se versionan.
+.github/workflows/      Compila y publica en GitHub Pages en cada push a main
 deploy/                 Configuración del servidor (nginx / apache / iis)
 tools/
   import_excel.py       Extrae datos y portadas del .xls -> src/data/books.ts
@@ -213,6 +253,7 @@ src/
     taxonomy.ts         Definición de los seis «momentos»
   lib/
     url.ts              Lista blanca de enlaces permitidos
+    rutas.ts            Prefijo de las rutas de public/ (GitHub Pages)
   components/
     Nav.tsx             Cabecera con el logo y la barra de progreso
     Hero.tsx            Portada con el muro de cubiertas en deriva
@@ -261,6 +302,8 @@ Los momentos se definen en dos lugares que deben coincidir:
 
 ## Pendiente
 
+- Activar **Settings → Pages → Source: GitHub Actions** en el repositorio, si
+  no se ha hecho ya: es lo único que falta para que el sitio quede en línea.
 - Confirmar el horario y el edificio en `src/components/Footer.tsx`
   (ahora: lunes a viernes, 8:00 a 19:00 h).
 - Certificado HTTPS en el servidor y, con él, descomentar

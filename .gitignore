@@ -32,3 +32,9 @@ brand/
 
 # Capturas de pantalla sueltas del script .shot.mjs
 *.screenshot.png
+
+# Notas internas de contexto para retomar el proyecto (y para los modelos de
+# IA que lo hagan). Se quedan en local por decisión del autor: el repositorio
+# es público y esto es material de trabajo, no documentación del producto.
+# La doc pública del proyecto es README.md.
+contexto.md

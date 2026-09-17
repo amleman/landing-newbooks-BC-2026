@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { books } from "../data/books";
+import { rutaPublica } from "../lib/rutas";
 
 const rows = [books.slice(0, 15), books.slice(15, 29), books.slice(29, 43)];
 
@@ -45,7 +46,7 @@ export function CoverWall() {
                 className="aspect-2/3 w-[104px] shrink-0 overflow-hidden rounded-lg sm:w-[140px] lg:w-[168px]"
               >
                 <img
-                  src={b.cover}
+                  src={rutaPublica(b.cover)}
                   alt=""
                   loading={i === 0 ? "eager" : "lazy"}
                   decoding="async"

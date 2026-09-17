@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer-core";
 import fs from "node:fs";
 const OUT = process.argv[2];
-const RUTA = "/" + (process.argv[3] || "claro.html");
+const RUTA = "/" + (process.argv[3] || "");
 const W = Number(process.argv[4] || 1440), H = Number(process.argv[5] || 900);
 const shots = (process.argv[6] || "0").split(",").map(Number);
 const mobile = process.argv[7] === "m";

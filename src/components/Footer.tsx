@@ -1,6 +1,7 @@
 import { books } from "../data/books";
 import { Aurora } from "./Aurora";
 import { Reveal } from "./Reveal";
+import { rutaPublica } from "../lib/rutas";
 
 const CORREO = "bibliotecacentral@usac.edu.gt";
 const DIRECCION =
@@ -89,7 +90,7 @@ export function Footer() {
         <div className="mt-20 grid gap-12 border-t border-white/8 pt-12 lg:grid-cols-[auto_1fr_auto] lg:gap-16">
           <div>
             <img
-              src="/logo-bc.webp"
+              src={rutaPublica("/logo-bc.webp")}
               alt="Biblioteca Central"
               width={520}
               height={513}

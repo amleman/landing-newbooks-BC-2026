@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Book } from "../data/books";
+import { rutaPublica } from "../lib/rutas";
 
 type Props = {
   book: Book;
@@ -25,7 +26,7 @@ export function Cover({ book, className = "", priority = false, variant = "tile"
     return (
       <div className={`relative flex items-center justify-center ${className}`}>
         <img
-          src={book.cover}
+          src={rutaPublica(book.cover)}
           alt={`Portada de ${book.titulo}`}
           onLoad={() => setLoaded(true)}
           loading={priority ? "eager" : "lazy"}
@@ -56,7 +57,7 @@ export function Cover({ book, className = "", priority = false, variant = "tile"
         style={{ backgroundImage: `url(${book.lqip})`, filter: "blur(8px)" }}
       />
       <img
-        src={book.cover}
+        src={rutaPublica(book.cover)}
         alt={`Portada de ${book.titulo}`}
         onLoad={() => setLoaded(true)}
         loading={priority ? "eager" : "lazy"}

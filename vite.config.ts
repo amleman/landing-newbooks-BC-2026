@@ -1,4 +1,3 @@
-import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -61,16 +60,28 @@ function cspMeta(): Plugin {
  * Prefijo de rutas del sitio.
  *
  * En un servidor propio la landing vive en la raíz del dominio y esto es "/".
- * En GitHub Pages, en cambio, un repositorio se publica dentro de una
- * subcarpeta (`https://<usuario>.github.io/<repo>/`), así que todas las rutas
- * de assets tienen que llevar ese prefijo o el navegador las pide a la raíz y
- * recibe 404. El workflow de .github/workflows/deploy.yml pone
- * `VITE_BASE=/<repo>/` antes de compilar; en local no hace falta nada.
+ * GitHub Pages, en cambio, publica un repositorio dentro de una subcarpeta
+ * (`https://<usuario>.github.io/<repo>/`), así que todas las rutas de assets
+ * tienen que llevar ese prefijo o el navegador las pide a la raíz y recibe
+ * 404.
  *
- * En el código, cualquier ruta de `public/` se arma con `rutaPublica()`
- * (src/lib/rutas.ts), que lee este mismo valor en tiempo de ejecución.
+ * No hace falta configurar nada: en GitHub Actions la variable
+ * `GITHUB_REPOSITORY` viene como "usuario/repo", y de ahí sale el prefijo
+ * solo — si algún día se renombra el repositorio, esto sigue funcionando.
+ * `VITE_BASE` queda como escape a mano (por ejemplo para un dominio propio,
+ * donde el prefijo vuelve a ser "/").
+ *
+ * Ojo con probar `VITE_BASE=/algo/` desde Git Bash en Windows: convierte el
+ * valor a una ruta de Windows y rompe la compilación. Usa PowerShell, o
+ * mejor `GITHUB_REPOSITORY=usuario/repo` para simular Pages en local.
+ *
+ * Vite reescribe con este prefijo lo que él mismo ve: las rutas del HTML y
+ * las `url()` del CSS. Las que viven como cadena de texto en el JSX o en
+ * src/data/books.ts pasan por `rutaPublica()` (src/lib/rutas.ts).
  */
-const base = process.env.VITE_BASE ?? "/";
+const repo = process.env.GITHUB_REPOSITORY?.split("/")[1];
+const base =
+  process.env.VITE_BASE ?? (repo && !repo.endsWith(".github.io") ? `/${repo}/` : "/");
 
 export default defineConfig({
   base,
@@ -80,18 +91,6 @@ export default defineConfig({
   build: {
     // Sin sourcemaps: publicarlos entregaría el código original al visitante.
     sourcemap: false,
-
-    // Dos propuestas en paralelo, cada una con su propia página:
-    //   index.html → versión oscura   (src/)
-    //   claro.html → versión clara    (src/claro/)
-    // No comparten ni componentes ni hoja de estilos; sí los datos de
-    // src/data/, la validación de enlaces de src/lib/ y todo lo de public/.
-    rollupOptions: {
-      input: {
-        oscura: fileURLToPath(new URL("./index.html", import.meta.url)),
-        clara: fileURLToPath(new URL("./claro.html", import.meta.url)),
-      },
-    },
   },
 
   server: {
