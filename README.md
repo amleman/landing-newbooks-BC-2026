@@ -55,7 +55,13 @@ subir `dist/` al repositorio: lo construye el runner.
 
 **Requisito, una sola vez**, en el repositorio de GitHub:
 **Settings → Pages → Build and deployment → Source: «GitHub Actions»**.
-Sin eso el workflow compila pero no puede publicar.
+Ya está configurado así.
+
+> Si ese ajuste se cambia a **«Deploy from a branch»**, GitHub deja de usar el
+> artefacto del workflow y sirve el repositorio tal cual. La página entonces
+> **sale rota**: el `index.html` del código fuente pide `/src/main.tsx`, las
+> fuentes y el favicon a la raíz del dominio, y todo eso da 404. Si ves ese
+> error, es esto: vuelve a poner «GitHub Actions» y relanza el workflow.
 
 Pages sirve el sitio dentro de una subcarpeta (`/landing-newbooks-BC-2026/`),
 no en la raíz del dominio, así que todas las rutas de assets necesitan ese
