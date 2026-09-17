@@ -1,0 +1,223 @@
+/* Versión clara. Hoja de estilos independiente de la oscura: source(none) +
+   @source "." hace que Tailwind solo mire esta carpeta, así ninguna de las dos
+   propuestas arrastra utilidades de la otra. */
+@import "tailwindcss" source(none);
+@source ".";
+
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("/fonts/web/JosefinSans-Variable.woff2") format("woff2-variations");
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("/fonts/web/JosefinSans-Italic-Variable.woff2") format("woff2-variations");
+  font-weight: 100 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  /* Luz, no papel plano: el fondo lleva veladuras de cian e índigo que se
+     mueven despacio, así la página nunca se ve muerta. */
+  --color-hoja: #f4f7fb;
+  --color-hoja-honda: #e9eff7;
+  --color-blanco: #ffffff;
+
+  --color-tinta: #101733;
+  --color-tinta-media: #4a5570;
+  --color-tinta-tenue: #7b86a0;
+  --color-filete: #dde5f0;
+
+  --color-indigo: #26295c;
+  --color-indigo-hondo: #191c46;
+  --color-cian: #1599d6;
+  --color-cian-vivo: #35b6ee;
+  --color-cian-texto: #0c6e9e;
+  --color-cian-papel: #e4f2fb;
+
+  --font-sans: "Josefin Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-libro: "Neulis", "Josefin Sans", ui-sans-serif, sans-serif;
+
+  --ease-suave: cubic-bezier(0.22, 1, 0.3, 1);
+
+  /* Sombras en capas: una pegada al borde y otra larga y difusa. Es lo que
+     hace que una tarjeta clara parezca que flota en vez de estar pegada. */
+  --shadow-posada: 0 1px 2px rgb(16 23 51 / 0.04), 0 6px 16px -6px rgb(16 23 51 / 0.1);
+  --shadow-flotante: 0 2px 4px rgb(16 23 51 / 0.05), 0 18px 40px -14px rgb(16 23 51 / 0.22);
+  --shadow-alzada: 0 4px 10px rgb(16 23 51 / 0.06), 0 34px 70px -22px rgb(16 23 51 / 0.3);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-hoja);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-cian);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-hoja-honda);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #c2cede;
+    border-radius: 99px;
+    border: 3px solid var(--color-hoja-honda);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-cian);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-cian-texto);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer utilities {
+  .font-libro {
+    font-family: var(--font-libro);
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .texto-justo {
+    text-align: justify;
+    text-justify: inter-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  .cifras {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+  .sin-barra {
+    scrollbar-width: none;
+  }
+  .sin-barra::-webkit-scrollbar {
+    display: none;
+  }
+  /* Cristal: panel translúcido sobre el fondo con veladuras */
+  .cristal {
+    background: rgb(255 255 255 / 0.72);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+}
+
+/* ── Atmósfera ────────────────────────────────────────────────────────────
+   Veladuras que respiran detrás del contenido. Solo traslación y opacidad:
+   las dos se componen en GPU sin volver a dibujar el desenfoque. */
+@keyframes velo {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate3d(5%, -7%, 0);
+    opacity: 1;
+  }
+}
+
+.velo {
+  animation: velo 26s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* El estante montándose al cargar, lomo a lomo */
+@keyframes lomo-entra {
+  from {
+    transform: translateY(52%) scaleY(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scaleY(1);
+    opacity: 1;
+  }
+}
+
+.lomo-entra {
+  animation: lomo-entra 0.75s var(--ease-suave) backwards;
+}
+
+@keyframes brillo {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(220%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .velo,
+  .lomo-entra {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

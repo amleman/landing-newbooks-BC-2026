@@ -1,0 +1,254 @@
+@import "tailwindcss";
+
+/* ── Tipografías de la Biblioteca ──────────────────────────────────────────
+   Neulis Cursive es la letra del logo: se reserva para los titulares grandes.
+   Josefin Sans lleva toda la interfaz y el texto corrido.
+   Los .woff2 los genera tools/build_assets.py desde public/fonts/.          */
+
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-LightItalic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Neulis";
+  src: url("/fonts/web/Neulis-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("/fonts/web/JosefinSans-Variable.woff2") format("woff2-variations");
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("/fonts/web/JosefinSans-Italic-Variable.woff2") format("woff2-variations");
+  font-weight: 100 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@theme {
+  /* ── Paleta ────────────────────────────────────────────────────────────
+     Los dos colores salen del logo institucional: #26295c (índigo) y
+     #1599d6 (cian). La escala oscura se construye sobre el tono del índigo,
+     así que el azul marino de fondo es el mismo azul de la marca, apagado. */
+  --color-abyss: #04060f;
+  --color-navy-950: #080b1c;
+  --color-navy-900: #0d1029;
+  --color-navy-850: #121637;
+  --color-navy-800: #181d47;
+  --color-navy-700: #26295c;
+  --color-navy-600: #343a78;
+  --color-usac: #1599d6;
+  --color-sky: #46b4e8;
+  --color-sky-soft: #93cfef;
+  --color-gold: #c9a227;
+  --color-gold-soft: #e3c874;
+  --color-parchment: #f3f0e7;
+  --color-mist: #a7b6d4;
+  --color-mist-dim: #6f7fa4;
+
+  --font-display: "Neulis", "Josefin Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Josefin Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    scrollbar-color: var(--color-navy-600) transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-abyss);
+    color: var(--color-parchment);
+    /* Josefin tiene la altura de x baja: pide algo más de interlínea que una
+       grotesca normal para que el texto corrido no se apelmace. */
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-usac);
+    color: #04060f;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-abyss);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-navy-700);
+    border-radius: 99px;
+    border: 2px solid var(--color-abyss);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-usac);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sky);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  /* Grano de papel: da textura editorial al azul plano */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.42;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .texto-justo {
+    text-align: justify;
+    text-justify: inter-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(180deg, #000 55%, transparent);
+    mask-image: linear-gradient(180deg, #000 55%, transparent);
+  }
+}
+
+/* ── Animaciones de fondo ─────────────────────────────────────────────── */
+@keyframes drift-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Solo traslación + opacidad: ambas se componen en GPU sin volver a
+   rasterizar el desenfoque, que es lo caro de animar. */
+@keyframes aurora {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(6%, -8%, 0);
+    opacity: 0.85;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll-hint {
+  0% {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
+
+.anim-marquee {
+  animation: drift-x linear infinite;
+  will-change: transform;
+}
+
+.anim-aurora {
+  animation: aurora 22s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .anim-marquee,
+  .anim-aurora {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
