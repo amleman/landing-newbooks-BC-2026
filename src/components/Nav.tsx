@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { rutaPublica } from "../lib/rutas";
+import { BotonSonido } from "./BotonSonido";
 
 const links = [
   { href: "#momentos", label: "Momentos" },
@@ -96,6 +97,9 @@ export function Nav() {
             ))}
           </ul>
 
+          <div className="flex shrink-0 items-center gap-2.5">
+          <BotonSonido />
+
           <a
             href="https://biblos.usac.edu.gt/opac/"
             target="_blank"
@@ -111,6 +115,7 @@ export function Nav() {
               </span>
             </span>
           </a>
+          </div>
         </nav>
       </div>
 

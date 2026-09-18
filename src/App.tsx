@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Book, Mood } from "./data/books";
 import { moodByKey } from "./data/taxonomy";
+import { sonar } from "./lib/sonido";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { Stats } from "./components/Stats";
@@ -53,6 +54,15 @@ export default function App() {
    * ninguno.
    */
   const hayPopup = Boolean(momento || libro);
+  useEffect(() => {
+    if (!hayPopup) return;
+    // Los microsonidos salen de aquí, no de cada pop-up: un solo sitio que
+    // sabe cuándo se abre y cuándo se cierra algo. `sonar` no hace nada si el
+    // visitante no ha encendido el sonido.
+    sonar("abrir");
+    return () => sonar("cerrar");
+  }, [hayPopup]);
+
   useEffect(() => {
     if (!hayPopup) return;
     const previo = document.body.style.overflow;

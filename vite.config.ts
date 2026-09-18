@@ -14,6 +14,7 @@ import tailwindcss from "@tailwindcss/vite";
  *   img-src … data:      las portadas y el placeholder en base64
  *   style-src 'self'     el CSS va en un archivo aparte; no hay <style>
  *   connect-src 'none'   la página no hace ni una sola petición de red
+ *   media-src 'self'     la música de fondo, servida por la propia página
  *   object-src 'none'    sin <object>, <embed> ni Flash heredado
  *   base-uri 'none'      nadie puede reescribir la base de las rutas
  *   form-action 'none'   no hay formularios: ninguno puede enviarse
@@ -29,7 +30,7 @@ const CSP = [
   "font-src 'self'",
   "connect-src 'none'",
   "object-src 'none'",
-  "media-src 'none'",
+  "media-src 'self'",
   "worker-src 'none'",
   "manifest-src 'self'",
   "base-uri 'none'",
