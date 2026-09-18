@@ -16,6 +16,9 @@ const HOSTS_PERMITIDOS = new Set([
   "twitter.com",
   "x.com",
   "www.youtube.com",
+  // Crédito obligatorio de la música de fondo (ver el pie de página).
+  "pixabay.com",
+  "www.pixabay.com",
 ]);
 
 /**

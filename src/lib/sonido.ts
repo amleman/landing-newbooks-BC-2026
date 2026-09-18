@@ -24,17 +24,23 @@ const CLAVE = "bc-sonido";
 /**
  * La pista de fondo.
  *
- * Mientras no haya archivo, esto se queda en `false` y el interruptor enciende
- * solo los microsonidos. No se intenta cargar «por si acaso» a propósito: la
- * CSP prohíbe peticiones de red (`connect-src 'none'`), así que no hay forma
- * limpia de preguntar si el archivo existe, y un intento fallido dejaría un
- * 404 rojo en la consola de todos los visitantes.
+ * Jazz de salón con saxofón, tranquilo, elegido por la dirección de la
+ * Biblioteca. Su licencia (Pixabay) obliga a dar crédito: está en el pie de
+ * página, en `src/components/Footer.tsx`. **Si se cambia la pista hay que
+ * cambiar el crédito**, y si se quita la música hay que quitarlo también.
  *
- * Para activarla: deja el archivo en `public/audio/ambiente.mp3` y pon
- * MUSICA_DISPONIBLE en true. Nada más.
+ * Pesa 3.3 MB, más que el resto de la página junta, pero no se descarga al
+ * cargar: el objeto `Audio` se crea la primera vez que alguien enciende el
+ * sonido, así que quien no lo use no paga ese peso.
+ *
+ * Si algún día no hay pista, `MUSICA_DISPONIBLE = false` deja el interruptor
+ * solo con los microsonidos. No se intenta cargar el archivo «por si acaso»:
+ * la CSP prohíbe peticiones de red (`connect-src 'none'`), así que no hay
+ * forma limpia de comprobar si existe, y el intento fallido dejaría un 404 en
+ * la consola de todos los visitantes.
  */
-const MUSICA_DISPONIBLE = false;
-const MUSICA = "/audio/ambiente.mp3";
+const MUSICA_DISPONIBLE = true;
+const MUSICA = "/audio/jazz-lounge-relaxing-background-music.mp3";
 
 /** Volumen de la música: fondo real, no primer plano. */
 const VOLUMEN_MUSICA = 0.18;

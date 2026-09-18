@@ -1,45 +1,18 @@
 @import "tailwindcss";
 
 /* ── Tipografías de la Biblioteca ──────────────────────────────────────────
-   Neulis Cursive es la letra del logo: se reserva para los titulares grandes.
-   Josefin Sans lleva toda la interfaz y el texto corrido.
-   Los .woff2 los genera tools/build_assets.py desde public/fonts/.          */
+   Fraunces lleva los titulares grandes; Josefin Sans, toda la interfaz y el
+   texto corrido.
 
-@font-face {
-  font-family: "Neulis";
-  src: url("/fonts/web/Neulis-Light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Neulis";
-  src: url("/fonts/web/Neulis-LightItalic.woff2") format("woff2");
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Neulis";
-  src: url("/fonts/web/Neulis-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Neulis";
-  src: url("/fonts/web/Neulis-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Neulis";
-  src: url("/fonts/web/Neulis-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
+   Fraunces sustituyó a Neulis Cursive (la letra del logotipo) en septiembre
+   de 2026, por decisión de la dirección de la Biblioteca. El logotipo sigue
+   siendo una imagen con la letra original, así que titulares y logo ya no
+   comparten forma de letra: es deliberado, no un descuido.
+
+   Fraunces es variable (un archivo cubre de 300 a 700) y de licencia libre
+   (SIL Open Font License), descargada de Google Fonts y servida desde este
+   mismo dominio: aquí no se carga nada de un CDN ajeno.
+   Josefin Sans la genera tools/build_assets.py desde los originales.        */
 
 @font-face {
   font-family: "Josefin Sans";
@@ -52,6 +25,21 @@
   font-family: "Josefin Sans";
   src: url("/fonts/web/JosefinSans-Italic-Variable.woff2") format("woff2-variations");
   font-weight: 100 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/web/Fraunces-Variable.woff2") format("woff2-variations");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/web/Fraunces-Italic-Variable.woff2") format("woff2-variations");
+  font-weight: 300 700;
   font-style: italic;
   font-display: swap;
 }
@@ -77,7 +65,7 @@
   --color-mist: #a7b6d4;
   --color-mist-dim: #6f7fa4;
 
-  --font-display: "Neulis", "Josefin Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", "Josefin Sans", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Josefin Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, monospace;
 

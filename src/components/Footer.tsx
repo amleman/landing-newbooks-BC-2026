@@ -7,6 +7,17 @@ const CORREO = "bibliotecacentral@usac.edu.gt";
 const DIRECCION =
   "Ciudad Universitaria Zona 12, Edificio de Recursos Educativos, Ciudad de Guatemala";
 
+/**
+ * Crédito de la música de fondo, exigido por la licencia de Pixabay con la
+ * que se descargó la pista (los parámetros utm_ son los que da Pixabay en su
+ * texto de atribución; se dejan tal cual para que el crédito sea el que ellos
+ * piden). Si algún día se quita la música, esto se quita con ella.
+ */
+const AUTOR_MUSICA =
+  "https://pixabay.com/users/sigmamusicart-36860929/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=412597";
+const PIXABAY =
+  "https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=412597";
+
 const datos = [
   { k: "Dónde", v: DIRECCION },
   { k: "Horario", v: "Lunes a viernes · 8:00 a 19:00 h" },
@@ -139,11 +150,38 @@ export function Footer() {
             </div>
           </div>
 
-          <p className="max-w-[34ch] text-[12px] leading-[1.7] text-mist-dim lg:text-right">
-            Listado de nuevas adquisiciones, septiembre&nbsp;2026.
-            <br />
-            Portadas y sinopsis con fines informativos, propiedad de sus respectivas editoriales.
-          </p>
+          <div className="max-w-[34ch] text-[12px] leading-[1.7] text-mist-dim lg:text-right">
+            <p>
+              Listado de nuevas adquisiciones, septiembre&nbsp;2026.
+              <br />
+              Portadas y sinopsis con fines informativos, propiedad de sus respectivas editoriales.
+            </p>
+
+            {/* Crédito de la música de fondo. No es cortesía: es la condición
+                de la licencia con la que se descargó la pista. Si cambia la
+                música (src/lib/sonido.ts), cambia esto. */}
+            <p className="mt-3">
+              Música de{" "}
+              <a
+                href={AUTOR_MUSICA}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="underline decoration-white/20 underline-offset-4 transition-colors duration-300 hover:text-mist hover:decoration-white/50"
+              >
+                Mikhail Smusev
+              </a>{" "}
+              en{" "}
+              <a
+                href={PIXABAY}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="underline decoration-white/20 underline-offset-4 transition-colors duration-300 hover:text-mist hover:decoration-white/50"
+              >
+                Pixabay
+              </a>
+              .
+            </p>
+          </div>
         </div>
       </div>
     </footer>

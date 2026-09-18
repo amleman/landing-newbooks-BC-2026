@@ -36,14 +36,15 @@ WEB_FONTS = PUBLIC / "fonts" / "web"
 
 # Solo los cortes que la pagina usa de verdad. Josefin es variable: un unico
 # archivo cubre de Thin a Bold.
+#
+# Neulis Cursive (la letra del logotipo) salio de aqui en septiembre de 2026:
+# la direccion de la Biblioteca pidio cambiar los titulares y se pusieron en
+# Fraunces. Fraunces se descarga ya en .woff2 desde Google Fonts y vive
+# directamente en public/fonts/web/, asi que este script no la toca. Los .otf
+# de Neulis siguen en brand/ por si algun dia se quiere volver atras.
 FONT_SOURCES = [
     (BRAND / "Josefin_Sans" / "JosefinSans-VariableFont_wght.ttf", "JosefinSans-Variable.woff2"),
     (BRAND / "Josefin_Sans" / "JosefinSans-Italic-VariableFont_wght.ttf", "JosefinSans-Italic-Variable.woff2"),
-    (BRAND / "NEULIS CURSIVE" / "fonnts.com-Neulis_Cursive_Light.otf", "Neulis-Light.woff2"),
-    (BRAND / "NEULIS CURSIVE" / "fonnts.com-Neulis_Cursive_Light_Italic.otf", "Neulis-LightItalic.woff2"),
-    (BRAND / "NEULIS CURSIVE" / "fonnts.com-Neulis_Cursive_Regular.otf", "Neulis-Regular.woff2"),
-    (BRAND / "NEULIS CURSIVE" / "fonnts.com-Neulis_Cursive_Italic.otf", "Neulis-Italic.woff2"),
-    (BRAND / "NEULIS CURSIVE" / "fonnts.com-Neulis_Cursive_Semi_Bold.otf", "Neulis-SemiBold.woff2"),
 ]
 
 LOGO_SRC = BRAND / "new_logo_bc.png"

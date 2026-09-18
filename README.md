@@ -171,6 +171,36 @@ publicada contenga **solo** el contenido de `dist/` — nunca `tools/`, `brand/`
 
 ---
 
+## Sonido
+
+La página tiene un interruptor de altavoz en la cabecera que enciende dos
+cosas a la vez: una **pista de jazz de fondo** y unos **microsonidos** al
+abrir y cerrar las fichas.
+
+**Arranca siempre apagado**, aunque la visita anterior lo dejara encendido.
+Los navegadores bloquean el audio automático de todas formas, pero además
+esta página se abre en salas de lectura: el sonido suena solo si alguien lo
+pide. La preferencia se recuerda en `localStorage`, pero no se autoenciende.
+
+- **La música**: `public/audio/jazz-lounge-relaxing-background-music.mp3`
+  (3.3 MB). No se descarga al cargar la página — el objeto `Audio` se crea la
+  primera vez que alguien enciende el sonido, así que quien no lo use no paga
+  ese peso. Suena en bucle al 18 % de volumen.
+- **Los microsonidos** no son archivos: se generan con la Web Audio API en
+  [`src/lib/sonido.ts`](src/lib/sonido.ts). Dos tonos cortos con envolvente
+  suave, sin peticiones de red y sin licencias que vigilar.
+- La CSP permite `media-src 'self'`: audio propio sí, de terceros no.
+
+> **El crédito de la música es obligatorio.** La pista se descargó de Pixabay
+> bajo una licencia que exige atribución, y el crédito está en el pie de
+> página (`src/components/Footer.tsx`). Si se cambia la pista hay que cambiar
+> el crédito; si se quita la música, se quita también. No es una cortesía.
+
+Para cambiar la música: deja el archivo en `public/audio/`, apunta `MUSICA` a
+él en `src/lib/sonido.ts` y actualiza el crédito del pie.
+
+---
+
 ## Cómo se cargan los libros
 
 Los datos **no se escriben a mano**. Salen del mismo `.xls` que exporta Biblos,
@@ -218,14 +248,21 @@ pip install fonttools brotli Pillow
 python tools/build_assets.py
 ```
 
-**Tipografías.** Las dos son propias, servidas desde el propio servidor: no se
-carga nada de Google Fonts, así que la página funciona sin internet y no filtra
-la visita a un tercero. Los `.ttf/.otf` se convierten a WOFF2 (271 KB en total).
+**Tipografías.** Las dos se sirven desde el propio servidor: no se enlaza a
+Google Fonts ni a ningún CDN, así que la página no filtra la visita a un
+tercero y cumple la CSP. Josefin se convierte a WOFF2 desde los originales de
+`brand/`; Fraunces ya se descargó en WOFF2 y vive en `public/fonts/web/`.
 
-- **Neulis Cursive** — la letra del logotipo. Se reserva para los titulares
-  grandes: el hero, los encabezados de sección, las citas y los ganchos. Tiene
-  mucho carácter (la `ll` con lazo, la `r` curva) y por eso no se usa por debajo
-  de unos 17 px: a cuerpo pequeño cansa la lectura.
+- **Fraunces** — los titulares grandes: el hero, los encabezados de sección,
+  las citas y los ganchos. Es variable (un solo archivo cubre de 300 a 700) y
+  de licencia libre (SIL Open Font License); se descargó de Google Fonts y se
+  sirve desde este mismo dominio, como todo lo demás.
+
+  > Sustituyó a **Neulis Cursive**, la letra del logotipo, en septiembre de
+  > 2026 por decisión de la dirección de la Biblioteca. El logotipo es una
+  > imagen y conserva su letra original, así que titulares y logo ya no
+  > comparten forma de letra: es deliberado. Los `.otf` de Neulis siguen en
+  > `brand/` por si se quiere volver atrás.
 - **Josefin Sans** — toda la interfaz y el texto corrido: menú, botones,
   etiquetas, títulos de tarjeta, autores y sinopsis. Es variable, así que un
   solo archivo cubre de Thin a Bold.
