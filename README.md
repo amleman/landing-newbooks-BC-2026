@@ -7,6 +7,11 @@ enlace directo a su ficha en Biblos.
 **Stack:** React 19 + TypeScript + Vite + Tailwind CSS v4 + Motion.
 Sitio completamente estático: no hay backend, ni base de datos, ni sesiones.
 
+**Diseño y desarrollo:** Anthony Alemán — 2026.
+Código bajo licencia MIT (ver [`LICENSE`](LICENSE), que detalla qué material de
+terceros queda fuera). La misma información está en el «Acerca de» del pie de
+la página, en `package.json` y en la metaetiqueta `author` del HTML.
+
 ---
 
 ## Arrancar el proyecto
@@ -351,3 +356,20 @@ Los momentos se definen en dos lugares que deben coincidir:
   (ahora: lunes a viernes, 8:00 a 19:00 h).
 - Certificado HTTPS en el servidor y, con él, descomentar
   `Strict-Transport-Security` en el archivo de `deploy/` que corresponda.
+
+---
+
+## Autoría y créditos
+
+- **Diseño y desarrollo**: Anthony Alemán, 2026. El historial de `git` de este
+  repositorio es el registro con fecha de cómo se construyó.
+- **Contenido**: Biblioteca Central de la Universidad de San Carlos de
+  Guatemala. Los datos y las portadas salen de su sistema Biblos.
+- **Música**: Mikhail Smusev, vía Pixabay. Su licencia exige atribución: el
+  crédito está en el pie de la página y va atado a la música (ver la sección
+  [Sonido](#sonido)).
+- **Tipografías**: Fraunces y Josefin Sans, ambas bajo SIL Open Font License.
+
+El sitio incluye un **«Acerca de»** (enlace en el pie) que explica al visitante
+qué es la página, por qué se hizo y quién la desarrolló. Es la ficha de
+autoría del proyecto, igual que la ficha de un libro dice quién lo escribió.

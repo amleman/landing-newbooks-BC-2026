@@ -48,7 +48,7 @@ const redes = [
   },
 ];
 
-export function Footer() {
+export function Footer({ onAcercaDe }: { onAcercaDe: () => void }) {
   return (
     <footer id="visitar" className="relative scroll-mt-20 overflow-hidden border-t border-white/8">
       <Aurora className="opacity-55" />
@@ -160,6 +160,16 @@ export function Footer() {
             {/* Crédito de la música de fondo. No es cortesía: es la condición
                 de la licencia con la que se descargó la pista. Si cambia la
                 música (src/lib/sonido.ts), cambia esto. */}
+            <p className="mt-3">
+              <button
+                type="button"
+                onClick={onAcercaDe}
+                className="underline decoration-white/20 underline-offset-4 transition-colors duration-300 hover:text-mist hover:decoration-white/50"
+              >
+                Acerca de este sitio
+              </button>
+            </p>
+
             <p className="mt-3">
               Música de{" "}
               <a

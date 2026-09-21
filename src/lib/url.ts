@@ -19,6 +19,9 @@ const HOSTS_PERMITIDOS = new Set([
   // Crédito obligatorio de la música de fondo (ver el pie de página).
   "pixabay.com",
   "www.pixabay.com",
+  // Perfil de quien desarrolló el sitio (ver el «acerca de»).
+  "www.linkedin.com",
+  "linkedin.com",
 ]);
 
 /**

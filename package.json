@@ -2,6 +2,9 @@
   "name": "landing-newbooks",
   "private": true,
   "version": "0.0.0",
+  "description": "Landing de las nuevas adquisiciones de la Biblioteca Central de la Universidad de San Carlos de Guatemala.",
+  "author": "Anthony Alemán",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

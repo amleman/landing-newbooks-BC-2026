@@ -12,6 +12,7 @@ import { Catalog } from "./components/Catalog";
 import { BookModal } from "./components/BookModal";
 import { MoodModal } from "./components/MoodModal";
 import { Footer } from "./components/Footer";
+import { AcercaDe } from "./components/AcercaDe";
 
 export default function App() {
   /** Filtro aplicado en el catálogo de abajo. */
@@ -20,6 +21,8 @@ export default function App() {
   const [momento, setMomento] = useState<Mood | null>(null);
   /** Ficha de libro abierta; puede quedar encima del pop-up de momento. */
   const [libro, setLibro] = useState<Book | null>(null);
+  /** El «acerca de»: qué es este sitio, por qué existe y quién lo hizo. */
+  const [acercaDe, setAcercaDe] = useState(false);
 
   // Contador, no booleano: así volver a pulsar el mismo momento también baja.
   const [bajarAlCatalogo, setBajarAlCatalogo] = useState(0);
@@ -53,7 +56,7 @@ export default function App() {
    * pop-ups haya encima: se bloquea si hay alguno y se suelta cuando no queda
    * ninguno.
    */
-  const hayPopup = Boolean(momento || libro);
+  const hayPopup = Boolean(momento || libro || acercaDe);
   useEffect(() => {
     if (!hayPopup) return;
     // Los microsonidos salen de aquí, no de cada pop-up: un solo sitio que
@@ -76,6 +79,8 @@ export default function App() {
   // pop-ups (teclado y foco) se desmontarían y remontarían sin motivo.
   const cerrarMomento = useCallback(() => setMomento(null), []);
   const cerrarLibro = useCallback(() => setLibro(null), []);
+  const abrirAcercaDe = useCallback(() => setAcercaDe(true), []);
+  const cerrarAcercaDe = useCallback(() => setAcercaDe(false), []);
 
   return (
     <>
@@ -88,7 +93,7 @@ export default function App() {
         <Spotlight onOpen={setLibro} />
         <Catalog mood={mood} setMood={setMood} onOpen={setLibro} />
       </main>
-      <Footer />
+      <Footer onAcercaDe={abrirAcercaDe} />
 
       <MoodModal
         momento={momento ? moodByKey[momento] : null}
@@ -98,6 +103,7 @@ export default function App() {
         tapado={Boolean(libro)}
       />
       <BookModal book={libro} onClose={cerrarLibro} />
+      <AcercaDe abierto={acercaDe} onCerrar={cerrarAcercaDe} />
     </>
   );
 }

@@ -1,0 +1,43 @@
+MIT License
+
+Copyright (c) 2026 Anthony Alemán
+
+Se concede permiso, libre de cargo, a cualquier persona que obtenga una copia
+de este software y de los archivos de documentación asociados (el «Software»),
+a utilizar el Software sin restricción, incluidos sin limitación los derechos
+a usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o
+vender copias del Software, y a permitir a las personas a las que se
+proporcione el Software a hacer lo mismo, sujeto a las siguientes condiciones:
+
+El aviso de copyright anterior y este aviso de permiso deberán incluirse en
+todas las copias o partes sustanciales del Software.
+
+EL SOFTWARE SE PROPORCIONA «TAL CUAL», SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O
+IMPLÍCITA, INCLUIDAS PERO NO LIMITADAS A LAS GARANTÍAS DE COMERCIABILIDAD,
+IDONEIDAD PARA UN PROPÓSITO PARTICULAR Y NO INFRACCIÓN. EN NINGÚN CASO LOS
+AUTORES O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE NINGUNA RECLAMACIÓN,
+DAÑO U OTRA RESPONSABILIDAD, YA SEA EN UNA ACCIÓN CONTRACTUAL, EXTRACONTRACTUAL
+O DE OTRO TIPO, DERIVADA DE, FUERA DE O EN CONEXIÓN CON EL SOFTWARE O EL USO U
+OTROS TRATOS EN EL SOFTWARE.
+
+--------------------------------------------------------------------------------
+
+QUÉ CUBRE Y QUÉ NO
+
+Esta licencia cubre el **código fuente** de este proyecto: los componentes de
+React, las hojas de estilo, los scripts de `tools/` y la configuración de
+compilación y despliegue.
+
+**No cubre** el material de terceros que el sitio usa y que conserva sus
+propios derechos y condiciones:
+
+- Las **portadas y sinopsis** de los libros, propiedad de sus respectivas
+  editoriales, incluidas aquí con fines informativos.
+- El **logotipo y la identidad visual** de la Biblioteca Central y de la
+  Universidad de San Carlos de Guatemala, y los logotipos institucionales de
+  USAC, Hcéres y CEAI, que pertenecen a sus organizaciones.
+- La **tipografía Josefin Sans** (SIL Open Font License) y la **tipografía
+  Fraunces** (SIL Open Font License).
+- La **música de fondo**, de Mikhail Smusev, descargada de Pixabay bajo sus
+  condiciones de uso, que exigen atribución. El crédito está en el pie de la
+  página y no puede retirarse mientras la música siga sonando.
