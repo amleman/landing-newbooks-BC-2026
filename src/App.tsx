@@ -60,8 +60,8 @@ export default function App() {
   useEffect(() => {
     if (!hayPopup) return;
     // Los microsonidos salen de aquí, no de cada pop-up: un solo sitio que
-    // sabe cuándo se abre y cuándo se cierra algo. `sonar` no hace nada si el
-    // visitante no ha encendido el sonido.
+    // sabe cuándo se abre y cuándo se cierra algo. `sonar` solo suena si el
+    // sonido está encendido (nace encendido; el botón lo puede apagar).
     sonar("abrir");
     return () => sonar("cerrar");
   }, [hayPopup]);

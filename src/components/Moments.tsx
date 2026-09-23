@@ -25,8 +25,8 @@ export function Moments({ onAbrir, abierto }: Props) {
             Empieza por aquí
           </span>
           <h2 className="mt-4 font-display text-[clamp(1.95rem,4.6vw,3.2rem)] leading-[1.1] font-light tracking-[-0.005em] text-parchment">
-            Nadie entra a una biblioteca por una materia.
-            <span className="block italic text-mist">Se entra por un motivo.</span>
+            Nadie entra a una biblioteca por una materia
+            <span className="block italic text-mist">Se entra por un motivo</span>
           </h2>
           <p className="mt-6 max-w-[52ch] text-pretty text-[16px] leading-[1.7] text-mist">
             Elige el tuyo y verás al instante los títulos nuevos que responden a eso.

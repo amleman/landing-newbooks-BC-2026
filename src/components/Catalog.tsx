@@ -42,7 +42,7 @@ export function Catalog({ mood, setMood, onOpen }: Props) {
           </span>
           <h2 className="mt-4 font-display text-[clamp(1.95rem,4.6vw,3.2rem)] leading-[1.1] font-light tracking-[-0.005em] text-parchment">
             Los {books.length} títulos,
-            <span className="block italic text-mist">uno por uno.</span>
+            <span className="block italic text-mist">uno por uno</span>
           </h2>
         </Reveal>
 
@@ -199,7 +199,7 @@ export function Catalog({ mood, setMood, onOpen }: Props) {
 
         {results.length === 0 && (
           <div className="mt-16 rounded-2xl border border-white/9 bg-navy-900/40 px-6 py-16 text-center">
-            <p className="font-display text-[22px] text-parchment">Nada por aquí.</p>
+            <p className="font-display text-[22px] text-parchment">Nada por aquí</p>
             <p className="mt-2 text-[15px] text-mist">
               Prueba con otro término o quita los filtros para ver los {books.length} títulos.
             </p>

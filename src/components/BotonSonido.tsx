@@ -1,17 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { activarSonido, sonar } from "../lib/sonido";
 
 /**
  * El interruptor de sonido de la cabecera.
  *
- * No enciende nada al cargar la página aunque la visita anterior lo dejara
- * encendido: el navegador no permite sonar sin un gesto del visitante, y
- * aunque lo permitiera, empezar a sonar solo sería una emboscada. La
- * preferencia se guarda igualmente (la usa src/lib/sonido.ts), pero aquí el
- * botón siempre nace apagado.
+ * Nace encendido: al cargar pide sonar y reintenta en el primer gesto del
+ * visitante, que es cuando el navegador lo permite. Si el primer gesto es
+ * apagarlo, el clic llega después del reintento y queda apagado.
  */
 export function BotonSonido() {
-  const [encendido, setEncendido] = useState(false);
+  const [encendido, setEncendido] = useState(true);
+
+  useEffect(() => {
+    // Intento inmediato (el navegador casi seguro lo bloquea hasta que haya
+    // un gesto) + reintento una sola vez en el primer gesto, sea cual sea.
+    activarSonido(true);
+    const arrancar = () => activarSonido(true);
+    window.addEventListener("pointerdown", arrancar, { once: true });
+    window.addEventListener("keydown", arrancar, { once: true });
+    window.addEventListener("touchstart", arrancar, { once: true, passive: true });
+    return () => {
+      window.removeEventListener("pointerdown", arrancar);
+      window.removeEventListener("keydown", arrancar);
+      window.removeEventListener("touchstart", arrancar);
+    };
+  }, []);
 
   const alternar = () => {
     const nuevo = !encendido;

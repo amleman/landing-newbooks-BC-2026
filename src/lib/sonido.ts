@@ -3,10 +3,10 @@
  *
  * Tres decisiones que conviene no revertir sin pensarlo:
  *
- * 1. **Arranca siempre apagado.** Los navegadores bloquean el audio automático
- *    (Chrome y Safari lo exigen desde hace años), pero además esto es la web
- *    de una biblioteca: mucha gente la va a abrir desde una sala de lectura o
- *    con la oficina en silencio. El sonido suena solo si alguien lo pide.
+ * 1. **Arranca siempre encendido.** En cuanto el navegador lo permite (su
+ *    política exige al menos un gesto del visitante: un clic, una tecla o un
+ *    toque), la música empieza a sonar sin que nadie tenga que pedirla.
+ *    `BotonSonido` la pide al cargar y reintenta en el primer gesto.
  * 2. **Un único interruptor** para todo. Nada de un control para la música y
  *    otro para los clics: quien quiere silencio lo quiere completo.
  * 3. **Los microsonidos se sintetizan aquí**, con la Web Audio API, en vez de
@@ -56,7 +56,8 @@ const TONOS: Record<Tipo, { hz: number; hasta: number; dur: number; vol: number 
 
 let ctx: AudioContext | null = null;
 let musica: HTMLAudioElement | null = null;
-let activo = false;
+/** Nace encendido: el botón lo pide al cargar y el navegador suena en el primer gesto. */
+let activo = true;
 
 /** Qué dejó elegido el visitante la última vez. */
 export function preferenciaGuardada(): boolean {
@@ -75,8 +76,11 @@ export function sonidoActivo(): boolean {
 /**
  * Enciende o apaga todo el sonido.
  *
- * Debe llamarse desde un gesto del visitante (un clic): el navegador solo
- * permite crear y reanudar el AudioContext dentro de uno.
+ * Al encender conviene llamarlo desde un gesto del visitante (un clic): el
+ * navegador solo permite crear y reanudar el AudioContext dentro de uno. El
+ * arranque automático lo llama al cargar (casi seguro bloqueado) y de nuevo
+ * en el primer gesto (ahí sí suena); si se llama fuera de un gesto y el
+ * navegador lo rechaza, no pasa nada: se reintenta en el siguiente gesto.
  */
 export function activarSonido(encender: boolean): void {
   activo = encender;

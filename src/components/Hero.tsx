@@ -56,7 +56,7 @@ export function Hero() {
             >
               {books.length} libros
             </motion.span>
-            <RevealWords text=" a tu biblioteca." delay={0.78} />
+            <RevealWords text=" a tu biblioteca" delay={0.78} />
           </span>
         </h1>
 

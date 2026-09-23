@@ -59,8 +59,8 @@ export function Footer({ onAcercaDe }: { onAcercaDe: () => void }) {
             El último paso
           </span>
           <h2 className="mt-4 font-display text-[clamp(2rem,5vw,3.5rem)] leading-[1.1] font-light tracking-[-0.005em] text-parchment">
-            Los {books.length} están en estantería.
-            <span className="block italic text-mist">Falta que vengas por uno.</span>
+            Los {books.length} están en estantería
+            <span className="block italic text-mist">Falta que vengas por uno</span>
           </h2>
           <p className="mt-7 max-w-[52ch] text-pretty text-[16px] leading-[1.75] text-mist">
             Puedes reservarlos desde el catálogo en línea o llegar directamente con la signatura

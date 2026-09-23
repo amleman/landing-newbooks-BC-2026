@@ -13,6 +13,14 @@ function firstSentences(text: string, max = 240) {
   return (stop > 90 ? cut.slice(0, stop + 1) : cut.trimEnd() + "…").trim();
 }
 
+/**
+ * En destacados los ganchos se muestran sin punto final. Solo afecta a esta
+ * sección: el dato original (`book.hook`) se deja intacto para el resto.
+ */
+function sinPuntoFinal(texto: string): string {
+  return texto.trimEnd().replace(/\.+$/, "");
+}
+
 function Item({ book, index, onOpen }: { book: Book; index: number; onOpen: (b: Book) => void }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
@@ -95,7 +103,7 @@ function Item({ book, index, onOpen }: { book: Book; index: number; onOpen: (b: 
           </div>
 
           <blockquote className="mt-6 font-display text-[clamp(1.5rem,3.3vw,2.45rem)] leading-[1.26] font-light tracking-[-0.005em] text-parchment">
-            «{book.hook}»
+            «{sinPuntoFinal(book.hook)}»
           </blockquote>
 
           <div className="mt-7 flex items-baseline gap-3">
@@ -153,7 +161,7 @@ export function Spotlight({ onOpen }: { onOpen: (b: Book) => void }) {
           </span>
           <h2 className="mt-4 font-display text-[clamp(1.95rem,4.6vw,3.2rem)] leading-[1.1] font-light tracking-[-0.005em] text-parchment">
             Cinco títulos que vale la pena
-            <span className="block italic text-mist">abrir primero.</span>
+            <span className="block italic text-mist">abrir primero</span>
           </h2>
         </Reveal>
 
