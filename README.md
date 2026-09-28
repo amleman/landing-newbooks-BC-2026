@@ -4,372 +4,136 @@ Landing de las nuevas adquisiciones de la Biblioteca Central de la Universidad
 de San Carlos de Guatemala. 43 títulos, con portada, sinopsis, signatura y
 enlace directo a su ficha en Biblos.
 
-**Stack:** React 19 + TypeScript + Vite + Tailwind CSS v4 + Motion.
-Sitio completamente estático: no hay backend, ni base de datos, ni sesiones.
+Sitio completamente estático: sin backend, sin base de datos, sin sesiones.
 
-**Diseño y desarrollo:** Anthony Alemán — 2026.
-Código bajo licencia MIT (ver [`LICENSE`](LICENSE), que detalla qué material de
-terceros queda fuera). La misma información está en el «Acerca de» del pie de
-la página, en `package.json` y en la metaetiqueta `author` del HTML.
+## Stack
 
----
+| Tecnología | Versión |
+|---|---|
+| Node.js | ≥ 20.19 (recomendado 22 LTS) |
+| React | 19 |
+| TypeScript | 6 |
+| Vite | 8 |
+| Tailwind CSS | 4 |
+| Motion | 13 |
 
-## Arrancar el proyecto
+## Requisitos
+
+- Node.js ≥ 20.19 y npm.
+- Un servidor Linux con Nginx o Apache para publicar (no requiere Node en producción).
+
+## Instalación y desarrollo
 
 ```bash
 npm install
 npm run dev
 ```
 
-Vite imprime dos direcciones:
+Vite sirve el sitio en `http://localhost:5173/`.
 
-```
-  ➜  Local:    http://localhost:5173/
-  ➜  Network:  http://10.84.2.188:5173/     ← ésta se abre desde el celular
-```
-
-La de **Network** funciona desde cualquier dispositivo conectado a la misma red
-(el mismo wifi). Si el celular no carga, casi siempre es el Firewall de Windows:
-la primera vez pregunta si permite Node.js en redes privadas y hay que decir que
-sí. La IP cambia cuando la máquina se reconecta a la red, así que conviene mirar
-lo que imprime Vite cada vez.
-
-Para ver la versión compilada (la real, con la CSP puesta) también desde el
-celular:
-
-```bash
-npm run build
-npm run preview
-```
-
-> El servidor de `npm run dev` es **solo para desarrollo dentro de la red de la
-> Biblioteca**. Nunca debe quedar expuesto a internet: lo que se publica es la
-> carpeta `dist/`, servida por Nginx, Apache o IIS.
-
----
-
-## Publicar
-
-### GitHub Pages (lo que está publicado hoy)
-
-Cada `push` a `main` compila y publica el sitio solo, con el workflow de
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). No hay que
-subir `dist/` al repositorio: lo construye el runner.
-
-    https://amleman.github.io/landing-newbooks-BC-2026/
-
-**Requisito, una sola vez**, en el repositorio de GitHub:
-**Settings → Pages → Build and deployment → Source: «GitHub Actions»**.
-Ya está configurado así.
-
-> Si ese ajuste se cambia a **«Deploy from a branch»**, GitHub deja de usar el
-> artefacto del workflow y sirve el repositorio tal cual. La página entonces
-> **sale rota**: el `index.html` del código fuente pide `/src/main.tsx`, las
-> fuentes y el favicon a la raíz del dominio, y todo eso da 404. Si ves ese
-> error, es esto: vuelve a poner «GitHub Actions» y relanza el workflow.
-
-Pages sirve el sitio dentro de una subcarpeta (`/landing-newbooks-BC-2026/`),
-no en la raíz del dominio, así que todas las rutas de assets necesitan ese
-prefijo. Está resuelto en dos sitios y no hay que tocar nada al respecto:
-
-- `vite.config.ts` deduce el prefijo de la variable `GITHUB_REPOSITORY` que
-  Actions inyecta sola, y se lo aplica al HTML y al CSS.
-- `rutaPublica()` (`src/lib/rutas.ts`) lo aplica a las rutas que viven como
-  cadena de texto en el código y en `src/data/books.ts` (las portadas y los
-  logos), que Vite no puede reescribir por su cuenta.
-
-Para reproducir en local exactamente lo que se publica, incluido el prefijo
-(en **PowerShell**, no en Git Bash, que convierte el valor a una ruta de
-Windows):
-
-```powershell
-$env:GITHUB_REPOSITORY = "amleman/landing-newbooks-BC-2026"
-npm run build
-npm run preview -- --base=/landing-newbooks-BC-2026/
-# abrir http://localhost:4173/landing-newbooks-BC-2026/
-```
-
-Si algún día se pone un dominio propio, el prefijo vuelve a ser `/`: basta
-añadir `env: VITE_BASE: /` al paso de compilar del workflow.
-
-### Servidor propio de la Biblioteca
+## Compilación
 
 ```bash
 npm run build
 ```
 
-Genera `dist/`: una carpeta de archivos estáticos (~2.4 MB) que se copia tal cual
-al servidor. No necesita Node, ni backend, ni base de datos.
-
-Junto a ella hay que poner la configuración del servidor, en `deploy/`:
-
-| Servidor | Archivo | Dónde va |
-|---|---|---|
-| Nginx | `deploy/nginx.conf` | dentro del bloque `server` |
-| Apache | `deploy/.htaccess` | en la raíz de la carpeta publicada |
-| IIS | `deploy/web.config` | en la raíz de la carpeta publicada |
-
-Los tres hacen lo mismo: cabeceras de seguridad, sin listados de directorio,
-caché correcta y redirección a HTTPS (comentada hasta que haya certificado).
-
----
-
-## Seguridad
-
-La página no recibe datos de nadie: no hay formularios, ni login, ni comentarios,
-ni analítica, ni scripts de terceros. Eso elimina de entrada casi toda la
-superficie de ataque habitual. Lo que sí se hizo:
-
-**En el código**
-
-- **Enlaces validados en dos capas.** El campo `enlace` de cada libro viene del
-  Excel, y acaba en un `href`. Un `javascript:...` o un dominio ajeno en esa
-  celda sería un enlace vivo dentro del sitio de la Biblioteca. Se filtra al
-  importar (`tools/import_excel.py`) y otra vez en el navegador
-  (`src/lib/url.ts`): solo pasa `https://` hacia dominios de una lista blanca.
-  Si un enlace no pasa, la ficha se muestra sin botón en vez de con un botón
-  peligroso.
-- **Sin `dangerouslySetInnerHTML`, sin `innerHTML`, sin `eval`.** Todo el texto
-  del Excel se pinta como texto: React lo escapa solo. Un `<script>` dentro de
-  una sinopsis se vería como texto literal, no se ejecutaría.
-- **Todos los enlaces externos llevan `rel="noreferrer noopener"`**, así la
-  pestaña de destino no puede manipular la nuestra ni ver de dónde viene.
-- **Sin cookies, sin `localStorage`, sin peticiones de red.** Verificado sobre
-  la compilación real: la página no contacta ni un solo dominio externo. No hay
-  nada que interceptar ni nada que filtrar.
-- **Sin sourcemaps en producción**: publicarlos entregaría el código original.
-
-**En las cabeceras** (`deploy/`)
-
-- `Content-Security-Policy` estricta: todo `'self'`, `connect-src 'none'`,
-  `object-src 'none'`, `base-uri 'none'`, `form-action 'none'`. Si alguien
-  lograra inyectar una etiqueta en el HTML, el navegador se negaría a
-  ejecutarla. La compilación ya la incluye como `<meta>`; la cabecera del
-  servidor la refuerza y añade `frame-ancestors`, que en `<meta>` no funciona.
-- `X-Frame-Options: DENY` + `frame-ancestors 'none'` — contra clickjacking:
-  nadie puede meter la página dentro de un iframe para engañar a un visitante.
-- `X-Content-Type-Options: nosniff` — el navegador respeta el tipo declarado y
-  no intenta adivinarlo.
-- `Referrer-Policy: strict-origin-when-cross-origin` — al salir hacia Biblos no
-  se filtra la ruta completa.
-- `Permissions-Policy` — se renuncia explícitamente a cámara, micrófono,
-  ubicación, pagos y USB, que la página no usa.
-- Cabeceras de versión del servidor eliminadas, y listados de directorio
-  desactivados.
-
-**Mantenimiento**
+Genera `dist/`: una carpeta de archivos estáticos (~2.4 MB) que se copia tal
+cual al servidor. No necesita Node, backend ni base de datos en producción.
 
 ```bash
-npm audit          # hoy: 0 vulnerabilidades
-npm outdated
+npm run preview   # sirve dist/ en local para verificarlo antes de publicar
 ```
 
-Conviene correrlo cada vez que se toque el proyecto. Como no hay backend, una
-vulnerabilidad en una dependencia solo puede llegar al visitante si se
-recompila y se vuelve a publicar: revisar antes de cada `npm run build`.
+## Despliegue en un servidor Linux
 
-**Lo que queda fuera de este repositorio** y depende del servidor de la
-Biblioteca: tener HTTPS con certificado válido (y entonces descomentar
-`Strict-Transport-Security`), el sistema operativo al día, y que la carpeta
-publicada contenga **solo** el contenido de `dist/` — nunca `tools/`, `brand/`,
-`node_modules/` ni el repositorio.
+1. Compilar el proyecto y copiar el contenido de `dist/` a la ruta que sirva
+   el servidor web (por ejemplo `/var/www/novedades`).
+2. Aplicar la configuración correspondiente de `deploy/`:
 
----
+   | Servidor | Archivo | Dónde va |
+   |---|---|---|
+   | Nginx | `deploy/nginx.conf` | dentro del bloque `server` |
+   | Apache | `deploy/.htaccess` | en la raíz de la carpeta publicada |
 
-## Sonido
+   Ambas configuran cabeceras de seguridad, caché, compresión, redirección a
+   HTTPS y desactivan el listado de directorios.
+3. Recargar el servidor:
 
-La página tiene un interruptor de altavoz en la cabecera que enciende dos
-cosas a la vez: una **pista de jazz de fondo** y unos **microsonidos** al
-abrir y cerrar las fichas.
+   ```bash
+   nginx -t && nginx -s reload
+   # o, con Apache:
+   a2enmod headers rewrite deflate && systemctl reload apache2
+   ```
 
-**Arranca siempre apagado**, aunque la visita anterior lo dejara encendido.
-Los navegadores bloquean el audio automático de todas formas, pero además
-esta página se abre en salas de lectura: el sonido suena solo si alguien lo
-pide. La preferencia se recuerda en `localStorage`, pero no se autoenciende.
+Solo debe publicarse el contenido de `dist/`. `tools/`, `brand/` y
+`node_modules/` no deben copiarse al servidor.
 
-- **La música**: `public/audio/jazz-lounge-relaxing-background-music.mp3`
-  (3.3 MB). No se descarga al cargar la página — el objeto `Audio` se crea la
-  primera vez que alguien enciende el sonido, así que quien no lo use no paga
-  ese peso. Suena en bucle al 18 % de volumen.
-- **Los microsonidos** no son archivos: se generan con la Web Audio API en
-  [`src/lib/sonido.ts`](src/lib/sonido.ts). Dos tonos cortos con envolvente
-  suave, sin peticiones de red y sin licencias que vigilar.
-- La CSP permite `media-src 'self'`: audio propio sí, de terceros no.
+## Actualizar el catálogo
 
-> **El crédito de la música es obligatorio.** La pista se descargó de Pixabay
-> bajo una licencia que exige atribución, y el crédito está en el pie de
-> página (`src/components/Footer.tsx`). Si se cambia la pista hay que cambiar
-> el crédito; si se quita la música, se quita también. No es una cortesía.
-
-Para cambiar la música: deja el archivo en `public/audio/`, apunta `MUSICA` a
-él en `src/lib/sonido.ts` y actualiza el crédito del pie.
-
----
-
-## Cómo se cargan los libros
-
-Los datos **no se escriben a mano**. Salen del mismo `.xls` que exporta Biblos,
-incluidas las portadas, que van incrustadas dentro del archivo de Excel.
+Los datos no se escriben a mano: salen del `.xls` que exporta Biblos,
+incluidas las portadas.
 
 ```bash
 pip install xlrd olefile Pillow
 python tools/import_excel.py "ruta/a/Lista de Libros Nuevos.xls"
 ```
 
-El script hace tres cosas:
-
-1. Lee la hoja `report com` (clasificación, autor, título, resumen, enlace) y
-   valida cada enlace.
-2. Extrae las portadas incrustadas, las reduce a 560 px de ancho y las guarda
-   como WebP en `public/covers/` (los 19 MB del Excel quedan en ~1.4 MB).
-3. Escribe `src/data/books.ts` con todo lo anterior más, por cada portada, su
-   **color de acento** (el que tiñe los halos y las etiquetas de esa ficha) y un
-   **placeholder** de 14 px que se pinta mientras carga la imagen real.
-
-### Cuando llegue la lista del próximo semestre
-
-1. Abre `tools/copy_editorial.py` y escribe, para cada número de fila:
-   - `HOOKS` — el gancho: una línea que diga qué se lleva quien abra ese libro.
-   - `AREAS` — el área temática que se muestra en la ficha.
-   - `_MOOD_MAP` — a qué «momentos» pertenece (ver abajo).
-   - `FEATURED` — los cinco que abren la sección «Destacados».
-2. Corre `python tools/import_excel.py <nuevo .xls>`.
-3. `npm run build`.
-
-Un título sin gancho no rompe nada: la ficha funciona igual, solo pierde la
-frase de venta.
-
----
-
-## Marca
-
-Los originales viven en `brand/`, que **no se publica y tampoco está en el
-repositorio** (ver `.gitignore`: son fuentes de licencia comercial y este repo
-es público). Se quedan en la máquina de quien mantiene el proyecto; lo que el
-sitio necesita son los derivados de `public/`. Para regenerarlos:
-
-```bash
-pip install fonttools brotli Pillow
-python tools/build_assets.py
-```
-
-**Tipografías.** Las dos se sirven desde el propio servidor: no se enlaza a
-Google Fonts ni a ningún CDN, así que la página no filtra la visita a un
-tercero y cumple la CSP. Josefin se convierte a WOFF2 desde los originales de
-`brand/`; Fraunces ya se descargó en WOFF2 y vive en `public/fonts/web/`.
-
-- **Fraunces** — los titulares grandes: el hero, los encabezados de sección,
-  las citas y los ganchos. Es variable (un solo archivo cubre de 300 a 700) y
-  de licencia libre (SIL Open Font License); se descargó de Google Fonts y se
-  sirve desde este mismo dominio, como todo lo demás.
-
-  > Sustituyó a **Neulis Cursive**, la letra del logotipo, en septiembre de
-  > 2026 por decisión de la dirección de la Biblioteca. El logotipo es una
-  > imagen y conserva su letra original, así que titulares y logo ya no
-  > comparten forma de letra: es deliberado. Los `.otf` de Neulis siguen en
-  > `brand/` por si se quiere volver atrás.
-- **Josefin Sans** — toda la interfaz y el texto corrido: menú, botones,
-  etiquetas, títulos de tarjeta, autores y sinopsis. Es variable, así que un
-  solo archivo cubre de Thin a Bold.
-
-**Logo.** `brand/new_logo_bc.png` es un pliego carta con el logo en blanco.
-`build_assets.py` lo recorta y saca `logo-bc.webp` (completo, para el pie),
-`logo-mark.webp` (solo el isotipo, para la cabecera) y los favicons.
-
-**Color.** Los dos colores institucionales salen del logo a color:
-**#26295c** (índigo) y **#1599d6** (cian). Toda la escala de azul marino se
-construyó sobre el tono del índigo, así que el fondo de la página es el mismo
-azul de la marca, apagado. El dorado (`#c9a227`) es un acento añadido para los
-títulos y las etiquetas: es lo único que no viene de la identidad. Todo está en
-el bloque `@theme` de `src/styles.css`.
-
----
+El script extrae los datos y las portadas, y genera `src/data/books.ts`. Los
+textos editoriales (ganchos, áreas y "momentos" de cada título) se definen a
+mano en `tools/copy_editorial.py` antes de correr el import.
 
 ## Estructura
 
 ```
-brand/                  Originales de marca. NO se publican ni se versionan.
-.github/workflows/      Compila y publica en GitHub Pages en cada push a main
-deploy/                 Configuración del servidor (nginx / apache / iis)
+deploy/                 Configuración del servidor (nginx / apache)
 tools/
   import_excel.py       Extrae datos y portadas del .xls -> src/data/books.ts
   copy_editorial.py     Ganchos, áreas y momentos por título (lo editable)
   build_assets.py       Fuentes a WOFF2 y recortes del logo
 src/
-  data/
-    books.ts            GENERADO. No editar a mano.
-    taxonomy.ts         Definición de los seis «momentos»
-  lib/
-    url.ts              Lista blanca de enlaces permitidos
-    rutas.ts            Prefijo de las rutas de public/ (GitHub Pages)
-  components/
-    Nav.tsx             Cabecera con el logo y la barra de progreso
-    Hero.tsx            Portada con el muro de cubiertas en deriva
-    Stats.tsx           Cifras con conteo al entrar en pantalla
-    Manifesto.tsx       Frase que se ilumina palabra por palabra con el scroll
-    Moments.tsx         Las seis puertas de entrada emocionales
-    MoodModal.tsx       Pop-up con los títulos de un momento
-    Spotlight.tsx       Cinco fichas editoriales grandes, con parallax
-    Catalog.tsx         Buscador + filtros + retícula de los 43
-    BookCard.tsx        Tarjeta; al pasar el cursor revela el gancho
-    BookModal.tsx       Ficha completa: sinopsis, signatura y enlace a Biblos
-    Footer.tsx          Cómo llegar, contacto y redes
-    Cover.tsx           Portadas de proporciones distintas en una retícula pareja
+  data/                 Datos generados y taxonomía de "momentos"
+  lib/                  Utilidades (validación de enlaces, rutas)
+  components/           Componentes de la interfaz
 public/                 Lo que se publica: portadas, fuentes web, logos
 ```
 
-## Los «momentos»
+## Seguridad
 
-En vez de pedirle al visitante que sepa de antemano qué materia busca, la
-página le pregunta qué necesita: *entender el mundo*, *aprobar el semestre*,
-*cuidar vidas*, *escapar un rato*, *ejercer justicia*, *mover el cuerpo*.
+La página no recibe datos de nadie: sin formularios, login, comentarios,
+analítica ni scripts de terceros.
 
-Al elegir uno se abre un pop-up con esos títulos, igual que la ficha de un
-libro: la respuesta llega de inmediato, sin salir de donde estaba. Desde ahí,
-«Ver estos N en el catálogo» aplica el filtro abajo y baja hasta él, y el
-catálogo recibe con un rótulo que dice qué está mostrando. Antes el clic solo
-bajaba en silencio hasta el buscador y parecía que al visitante le tocaba
-buscar por su cuenta.
+- Los enlaces a Biblos se validan contra una lista blanca de dominios, tanto
+  al importar (`tools/import_excel.py`) como en el navegador (`src/lib/url.ts`).
+- Sin `dangerouslySetInnerHTML`, `innerHTML` ni `eval`; todo el contenido del
+  Excel se renderiza como texto escapado.
+- Enlaces externos con `rel="noreferrer noopener"`.
+- Sin cookies, `localStorage` de datos personales ni peticiones de red a
+  terceros.
+- Sin sourcemaps en producción.
+- Cabeceras de seguridad estrictas (`deploy/`): CSP, `X-Frame-Options`,
+  `X-Content-Type-Options`, `Referrer-Policy` y `Permissions-Policy`.
 
-Los momentos se definen en dos lugares que deben coincidir:
+```bash
+npm audit
+npm outdated
+```
 
-- `src/data/taxonomy.ts` — el texto que se ve (etiqueta, promesa, descripción).
-- `tools/copy_editorial.py` — qué libro pertenece a cuál (`MOOD_KEYS`, `_MOOD_MAP`).
+Conviene correrlo antes de cada `npm run build`, ya que una vulnerabilidad en
+una dependencia solo llega al visitante si se recompila y se republica.
 
-## Decisiones de diseño
+Queda a cargo del servidor: certificado HTTPS válido (para activar
+`Strict-Transport-Security`) y mantener el sistema operativo al día.
 
-- **Las portadas no se recortan.** Vienen en proporciones muy distintas
-  (verticales, cuadradas). Cada una se muestra completa sobre un fondo oscuro
-  teñido con su propio color dominante, así la retícula queda pareja sin perder
-  ningún título.
-- **Rendimiento.** El muro de cubiertas del inicio se detiene solo cuando sale
-  de pantalla; las animaciones de fondo usan únicamente traslación y opacidad,
-  que la GPU compone sin volver a dibujar el desenfoque.
-- **`prefers-reduced-motion`.** Quien tenga desactivadas las animaciones en su
-  sistema ve la página completa y quieta.
+## Sonido
 
-## Pendiente
+La cabecera tiene un interruptor que activa música de fondo y microsonidos de
+interfaz. Arranca siempre apagado y no se autoenciende, aunque la preferencia
+se recuerde en `localStorage`. El crédito de la música (licencia con
+atribución obligatoria) está en el pie de página.
 
-- Activar **Settings → Pages → Source: GitHub Actions** en el repositorio, si
-  no se ha hecho ya: es lo único que falta para que el sitio quede en línea.
-- Confirmar el horario y el edificio en `src/components/Footer.tsx`
-  (ahora: lunes a viernes, 8:00 a 19:00 h).
-- Certificado HTTPS en el servidor y, con él, descomentar
-  `Strict-Transport-Security` en el archivo de `deploy/` que corresponda.
+## Licencia
 
----
+MIT — ver [`LICENSE`](LICENSE), que detalla el material de terceros excluido
+(tipografías, música, contenido de la Biblioteca).
 
-## Autoría y créditos
-
-- **Diseño y desarrollo**: Anthony Alemán, 2026. El historial de `git` de este
-  repositorio es el registro con fecha de cómo se construyó.
-- **Contenido**: Biblioteca Central de la Universidad de San Carlos de
-  Guatemala. Los datos y las portadas salen de su sistema Biblos.
-- **Música**: Mikhail Smusev, vía Pixabay. Su licencia exige atribución: el
-  crédito está en el pie de la página y va atado a la música (ver la sección
-  [Sonido](#sonido)).
-- **Tipografías**: Fraunces y Josefin Sans, ambas bajo SIL Open Font License.
-
-El sitio incluye un **«Acerca de»** (enlace en el pie) que explica al visitante
-qué es la página, por qué se hizo y quién la desarrolló. Es la ficha de
-autoría del proyecto, igual que la ficha de un libro dice quién lo escribió.
+Diseño y desarrollo: Anthony Alemán — 2026.
