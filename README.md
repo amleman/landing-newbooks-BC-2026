@@ -1,12 +1,30 @@
-# Novedades · Biblioteca Central USAC
+<div align="center">
+
+# 📚 Novedades — Biblioteca Central USAC
+
+[![React](https://img.shields.io/badge/react-19-61DAFB?logo=react&logoColor=black&style=flat-square)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/typescript-6-3178C6?logo=typescript&logoColor=white&style=flat-square)](https://www.typescriptlang.org)
+[![Vite](https://img.shields.io/badge/vite-8-646CFF?logo=vite&logoColor=white&style=flat-square)](https://vite.dev)
+[![Tailwind CSS](https://img.shields.io/badge/tailwind_css-4-06B6D4?logo=tailwindcss&logoColor=white&style=flat-square)](https://tailwindcss.com)
+[![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white&style=flat-square)](https://www.python.org)
+
+[![Static Site](https://img.shields.io/badge/sitio-est%C3%A1tico-555?style=flat-square)](#)
+[![Nginx](https://img.shields.io/badge/nginx-apache-009639?logo=nginx&logoColor=white&style=flat-square)](deploy)
+[![License: MIT](https://img.shields.io/badge/licencia-MIT-yellow.svg?style=flat-square)](LICENSE)
+
+### 🎓 Descubre las nuevas adquisiciones de la Biblioteca Central
 
 Landing de las nuevas adquisiciones de la Biblioteca Central de la Universidad
-de San Carlos de Guatemala. 43 títulos, con portada, sinopsis, signatura y
+de San Carlos de Guatemala: 43 títulos con portada, sinopsis, signatura y
 enlace directo a su ficha en Biblos.
 
-Sitio completamente estático: sin backend, sin base de datos, sin sesiones.
+[Instalación](#-instalación-y-desarrollo) · [Despliegue](#-despliegue-en-un-servidor-linux) · [Seguridad](#-seguridad)
 
-## Stack
+</div>
+
+---
+
+## 🧱 Stack
 
 | Tecnología | Versión |
 |---|---|
@@ -17,12 +35,14 @@ Sitio completamente estático: sin backend, sin base de datos, sin sesiones.
 | Tailwind CSS | 4 |
 | Motion | 13 |
 
-## Requisitos
+Sitio completamente estático: sin backend, sin base de datos, sin sesiones.
+
+## ✅ Requisitos
 
 - Node.js ≥ 20.19 y npm.
 - Un servidor Linux con Nginx o Apache para publicar (no requiere Node en producción).
 
-## Instalación y desarrollo
+## 🚀 Instalación y desarrollo
 
 ```bash
 npm install
@@ -31,7 +51,7 @@ npm run dev
 
 Vite sirve el sitio en `http://localhost:5173/`.
 
-## Compilación
+## 📦 Compilación
 
 ```bash
 npm run build
@@ -44,7 +64,7 @@ cual al servidor. No necesita Node, backend ni base de datos en producción.
 npm run preview   # sirve dist/ en local para verificarlo antes de publicar
 ```
 
-## Despliegue en un servidor Linux
+## 🌐 Despliegue en un servidor Linux
 
 1. Compilar el proyecto y copiar el contenido de `dist/` a la ruta que sirva
    el servidor web (por ejemplo `/var/www/novedades`).
@@ -68,7 +88,7 @@ npm run preview   # sirve dist/ en local para verificarlo antes de publicar
 Solo debe publicarse el contenido de `dist/`. `tools/`, `brand/` y
 `node_modules/` no deben copiarse al servidor.
 
-## Actualizar el catálogo
+## 📖 Actualizar el catálogo
 
 Los datos no se escriben a mano: salen del `.xls` que exporta Biblos,
 incluidas las portadas.
@@ -82,7 +102,7 @@ El script extrae los datos y las portadas, y genera `src/data/books.ts`. Los
 textos editoriales (ganchos, áreas y "momentos" de cada título) se definen a
 mano en `tools/copy_editorial.py` antes de correr el import.
 
-## Estructura
+## 🗂️ Estructura
 
 ```
 deploy/                 Configuración del servidor (nginx / apache)
@@ -97,7 +117,7 @@ src/
 public/                 Lo que se publica: portadas, fuentes web, logos
 ```
 
-## Seguridad
+## 🔒 Seguridad
 
 La página no recibe datos de nadie: sin formularios, login, comentarios,
 analítica ni scripts de terceros.
@@ -124,16 +144,20 @@ una dependencia solo llega al visitante si se recompila y se republica.
 Queda a cargo del servidor: certificado HTTPS válido (para activar
 `Strict-Transport-Security`) y mantener el sistema operativo al día.
 
-## Sonido
+## 🔊 Sonido
 
 La cabecera tiene un interruptor que activa música de fondo y microsonidos de
 interfaz. Arranca siempre apagado y no se autoenciende, aunque la preferencia
 se recuerde en `localStorage`. El crédito de la música (licencia con
 atribución obligatoria) está en el pie de página.
 
-## Licencia
+## 📄 Licencia
 
 MIT — ver [`LICENSE`](LICENSE), que detalla el material de terceros excluido
 (tipografías, música, contenido de la Biblioteca).
 
-Diseño y desarrollo: Anthony Alemán — 2026.
+<div align="center">
+
+Diseño y desarrollo: **Anthony Alemán** — 2026
+
+</div>
